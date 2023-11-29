@@ -1,11 +1,9 @@
 <script setup lang="ts">
-
+const route = useRoute();
 </script>
 
 <template>
-  $END$
+    <CodeView :id="route.params.id" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

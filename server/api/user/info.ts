@@ -1,10 +1,29 @@
-import { connection } from "mongoose";
-import { User } from "server/models/user";
+import { Session } from "next-auth";
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "#auth";
 
-export default defineEventHandler((event) => {
-    const { status, data } = useAuth();
+const prisma = new PrismaClient();
 
-    if (status.value === "authenticated") {
-        connection.collection<User>();
+export default defineEventHandler(async (event) => {
+    const session: Session | null = await getServerSession(event);
+
+    if (session != null && session.user != null && session.user.name != null) {
+        const user = await prisma.user.findFirst({
+            where: {
+                name: session.user.name,
+            },
+        });
+
+        if (user) {
+            return user;
+        }
+
+        return prisma.user.create({
+            data: {
+                name: session.user.name,
+                accessLevel: "user",
+            },
+        });
     }
+    throw createError({ statusMessage: "Unauthenticated", statusCode: 403 });
 });

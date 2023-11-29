@@ -4,10 +4,7 @@ module.exports = {
         "es2021": true,
         "node": true
     },
-    "extends": [
-        "standard-with-typescript",
-        "plugin:vue/vue3-essential"
-    ],
+    "extends": ['@nuxtjs/eslint-config-typescript', 'plugin:prettier/recommended'],
     "overrides": [
         {
             "env": {
@@ -21,13 +18,18 @@ module.exports = {
             }
         }
     ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
+    "parser": "vue-eslint-parser",
+    parserOptions: {
+        parser: '@typescript-eslint/parser',
     },
     "plugins": [
-        "vue"
+        "vue",
+        "prettier",
+        "@typescript-eslint"
     ],
     "rules": {
+        "prettier/prettier": "error",
+        "arrow-body-style": "off",
+        "prefer-arrow-callback": "off"
     }
 }
