@@ -46,6 +46,7 @@
     "@vue/eslint-config-typescript": "^12.0.0",
     "codemirror": "^6.0.1",
     "highlight.js": "^11.9.0",
+    "lodash-es": "^4.17.21",
     "next-auth": "4.21.1",
     "nuxt-mongoose": "^1.0.3",
     "vue-codemirror": "^6.1.1",

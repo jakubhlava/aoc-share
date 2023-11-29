@@ -3,18 +3,21 @@
 <template>
     <div class="flex w-full justify-between">
         <div>
-            <a href="/" class="text-aoc-link hover:text-aoc-link-focus">
+            <NuxtLink to="/" class="text-aoc-link hover:text-aoc-link-focus">
                 [ Home ]
-            </a>
-            <a
-                href="/my-submissions"
+            </NuxtLink>
+            <NuxtLink
+                to="/submissions/my"
                 class="text-aoc-link hover:text-aoc-link-focus"
             >
                 [ My submissions ]
-            </a>
-            <a href="/submit" class="text-aoc-link hover:text-aoc-link-focus">
+            </NuxtLink>
+            <NuxtLink
+                to="/submit"
+                class="text-aoc-link hover:text-aoc-link-focus"
+            >
                 [ Submit file ]
-            </a>
+            </NuxtLink>
         </div>
         <div>
             <LoginButton />

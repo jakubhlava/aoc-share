@@ -11,11 +11,11 @@ const highlightedCode = useState<string>("highlightedCode", () => "");
 
 onMounted(async () => {
     await nextTick(async () => {
-        data.value = (await useFetch(`/api/submission/${props.id}`))
-            .data as Submission;
+        data.value = (await useFetch(`/api/submission/${props.id}`)).data
+            .value as Submission & { user: User };
         currentUser.value = (await useCurrentUser()).value;
     });
-    highlightedCode.value = hljs.highlightAuto(data.value?.content).value;
+    highlightedCode.value = hljs.highlightAuto(data.value?.content ?? "").value;
 });
 
 const deleteSolution = async () => {
@@ -25,27 +25,18 @@ const deleteSolution = async () => {
             method: "POST",
         },
     );
-    const response = responseData.value as Submission;
-    await navigateTo(`/${data?.eventId}/${data?.day}`);
+    if (responseData.value) {
+        await navigateTo(`/${data?.value?.eventId}/${data?.value?.day}`);
+    }
 };
 </script>
 
 <template>
-    <p>
+    <p class="my-2">
         Code by <span class="text-aoc-emph"> {{ data?.user.name }} </span> for
         day {{ data?.day }} of {{ data?.eventId }}, solution has
         {{ (data?.content.match(/\n/g) || []).length }} lines.
     </p>
-
-    <div class="my-2 flex gap-4">
-        <button class="text-aoc-link hover:text-aoc-link-focus">
-            [ More by author ]
-        </button>
-        <button class="text-aoc-link hover:text-aoc-link-focus">
-            [ More solutions for day ]
-        </button>
-    </div>
-
     <pre v-html="highlightedCode" />
 
     <div class="my-2">
