@@ -4,7 +4,9 @@ export default defineNuxtConfig({
     css: ["~/assets/css/main.css"],
     modules: ["@sidebase/nuxt-auth"],
     auth: {
-        globalAppMiddleware: true,
+        provider: {
+            type: "authjs",
+        },
     },
     postcss: {
         plugins: {
