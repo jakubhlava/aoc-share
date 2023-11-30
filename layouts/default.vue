@@ -10,9 +10,12 @@
                 </a>
             </div>
             <div class="flex-grow">
-                <TopMenu />
+                <ClientOnly fallback="Loading...">
+                    <TopMenu />
+                </ClientOnly>
             </div>
         </div>
         <slot />
     </div>
 </template>
+<script setup lang="ts"></script>

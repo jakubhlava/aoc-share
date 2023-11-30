@@ -5,21 +5,15 @@ const props = defineProps<{
     signIn: any;
     signOut: any;
     user: any;
+    error: any;
 }>();
-
-console.log(props.data);
-console.log(props.user);
-console.log(props.status);
 </script>
 
 <template>
-    <div
-        v-if="props.status === 'authenticated'"
-        class="flex gap-2 items-center"
-    >
+    <div v-if="props.error === null" class="flex gap-2 items-center">
         Logged in as
         <span class="text-aoc-emph drop-shadow-aoc">
-            {{ props.data?.user?.name }}
+            {{ props.user?.name }}
         </span>
         <span v-if="props.user?.accessLevel === 'admin'" class="text-aoc-gold"
             >( Admin )</span

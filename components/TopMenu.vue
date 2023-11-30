@@ -1,16 +1,23 @@
 <script setup lang="ts">
-const { status, data, signIn, signOut } = useAuth();
+const { data, status, signIn, signOut } = useAuth();
 const headers = useRequestHeaders(["cookie"]) as HeadersInit;
-const { data: user } = await useFetch("/api/user/info", { headers });
+const {
+    data: user,
+    pending,
+    error,
+} = await useFetch("/api/user/info", { headers });
 </script>
 
 <template>
-    <div class="flex w-full justify-between">
+    <div v-if="pending" class="flex w-full justify-end">
+        <span> Loading... </span>
+    </div>
+    <div v-else class="flex w-full justify-between">
         <div class="flex gap-2">
             <NuxtLink to="/" class="text-aoc-link hover:text-aoc-link-focus">
                 [ Home ]
             </NuxtLink>
-            <div v-if="status === 'authenticated'">
+            <div v-if="error === null">
                 <NuxtLink
                     to="/submissions/my"
                     class="text-aoc-link hover:text-aoc-link-focus"
@@ -32,6 +39,7 @@ const { data: user } = await useFetch("/api/user/info", { headers });
                 :sign-in="signIn"
                 :sign-out="signOut"
                 :user="user"
+                :error="error"
             />
         </div>
     </div>
