@@ -15,7 +15,9 @@ onMounted(async () => {
             .value as Submission & { user: User };
         currentUser.value = (await useCurrentUser()).value;
     });
-    highlightedCode.value = hljs.highlightAuto(data.value?.content ?? "").value;
+    highlightedCode.value = hljs.highlight(data.value?.content ?? "", {
+        language: data.value?.language ?? "python",
+    }).value;
 });
 
 const deleteSolution = async () => {

@@ -3,7 +3,7 @@ const route = useRoute();
 </script>
 
 <template>
-    <CodeView :id="route.params.id" />
+    <CodeView :id="parseInt(route.params.id)" />
 </template>
 
 <style scoped></style>

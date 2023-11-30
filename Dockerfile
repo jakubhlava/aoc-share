@@ -25,7 +25,10 @@ FROM base
 
 ENV PORT=$PORT
 
+RUN apt-get update -y && apt-get install -y openssl
+
 COPY --from=build /src/.output /src/.output
+COPY --from=build /src/prisma /src/prisma
 # Optional, only needed if you rely on unbundled dependencies
 # COPY --from=build /src/node_modules /src/node_modules
 
