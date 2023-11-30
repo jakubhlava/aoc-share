@@ -1,24 +1,38 @@
 <script setup lang="ts">
-const { status, data, signIn, signOut } = useAuth();
-const headers = useRequestHeaders(["cookie"]) as HeadersInit;
-const { data: user } = await useFetch("/api/user/info", { headers });
+const props = defineProps<{
+    status: string;
+    data: any;
+    signIn: any;
+    signOut: any;
+    user: any;
+}>();
+
+console.log(props.data);
+console.log(props.user);
+console.log(props.status);
 </script>
 
 <template>
-    <div v-if="status === 'authenticated'" class="flex gap-2 items-center">
+    <div
+        v-if="props.status === 'authenticated'"
+        class="flex gap-2 items-center"
+    >
         Logged in as
         <span class="text-aoc-emph drop-shadow-aoc">
-            {{ data?.user?.name }}
+            {{ props.data?.user?.name }}
         </span>
-        <span v-if="user?.accessLevel === 'admin'" class="text-aoc-gold"
+        <span v-if="props.user?.accessLevel === 'admin'" class="text-aoc-gold"
             >( Admin )</span
         >
-        <button class="text-aoc-link hover:text-aoc-link-focus">
+        <button
+            v-if="props.user?.accessLevel === 'admin'"
+            class="text-aoc-link hover:text-aoc-link-focus"
+        >
             [ Admin Panel ]
         </button>
         <button
             class="text-aoc-link hover:text-aoc-link-focus"
-            @click="signOut()"
+            @click="props.signOut()"
         >
             [ Logout ]
         </button>
@@ -26,7 +40,7 @@ const { data: user } = await useFetch("/api/user/info", { headers });
     <button
         v-else
         class="text-aoc-link hover:text-aoc-link-focus"
-        @click="signIn('discord')"
+        @click="props.signIn('discord')"
     >
         [ Login with Discord ]
     </button>

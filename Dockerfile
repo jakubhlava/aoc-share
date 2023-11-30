@@ -1,6 +1,7 @@
 ARG NODE_VERSION=20.10.0
 
 FROM node:${NODE_VERSION}-slim as base
+RUN apt-get update -y && apt-get install -y openssl
 
 ARG PORT=3000
 
@@ -17,6 +18,7 @@ RUN npm install --production=false
 
 COPY . .
 
+RUN npx prisma generate
 RUN npm run build
 RUN npm prune
 
@@ -25,10 +27,9 @@ FROM base
 
 ENV PORT=$PORT
 
-RUN apt-get update -y && apt-get install -y openssl
-
 COPY --from=build /src/.output /src/.output
 COPY --from=build /src/prisma /src/prisma
+COPY --from=build /src/node_modules/.prisma/client /src/node_modules/.prisma/client
 # Optional, only needed if you rely on unbundled dependencies
 # COPY --from=build /src/node_modules /src/node_modules
 

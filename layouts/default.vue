@@ -10,9 +10,7 @@
                 </a>
             </div>
             <div class="flex-grow">
-                <ClientOnly fallback-tag="div" fallback="Loading login...">
-                    <TopMenu />
-                </ClientOnly>
+                <TopMenu />
             </div>
         </div>
         <slot />

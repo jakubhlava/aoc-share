@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { status } = useAuth();
+const { status, data, signIn, signOut } = useAuth();
+const headers = useRequestHeaders(["cookie"]) as HeadersInit;
+const { data: user } = await useFetch("/api/user/info", { headers });
 </script>
 
 <template>
@@ -8,7 +10,7 @@ const { status } = useAuth();
             <NuxtLink to="/" class="text-aoc-link hover:text-aoc-link-focus">
                 [ Home ]
             </NuxtLink>
-            <div v-if="status === 'authenticated'" class="flex gap-2">
+            <div v-if="status === 'authenticated'">
                 <NuxtLink
                     to="/submissions/my"
                     class="text-aoc-link hover:text-aoc-link-focus"
@@ -24,7 +26,13 @@ const { status } = useAuth();
             </div>
         </div>
         <div>
-            <LoginButton />
+            <LoginButton
+                :status="status"
+                :data="data"
+                :sign-in="signIn"
+                :sign-out="signOut"
+                :user="user"
+            />
         </div>
     </div>
 </template>
