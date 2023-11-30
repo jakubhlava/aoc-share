@@ -17,7 +17,7 @@ Design heavily inspired by [Advent of Code](https://adventofcode.com/) original 
 ## Usage
 
 - Setup your environment by `npm install`
-- Copy all .env.*.example files to .env.* and fill them with your data
+- Copy all .env.\*.example files to .env.\* and fill them with your data
 - Run `npm run dev` to start development server
 - Run `npx prisma migrate dev` to initialize DB
 - OR: Run `npm run build` to build production version
