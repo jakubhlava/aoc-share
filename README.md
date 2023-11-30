@@ -1,75 +1,34 @@
-# Nuxt 3 Minimal Starter
+# AoC Code Sharing
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This repository is for website, which our group uses to share solutions of [Advent of Code](https://adventofcode.com/)
+problems.
 
-## Setup
+Design heavily inspired by [Advent of Code](https://adventofcode.com/) original website.
 
-Make sure to install the dependencies:
+## Tech Stack
 
-```bash
-# npm
-npm install
+- Nuxt.js 3
+- Prisma
+- PostgreSQL
+- TailwindCSS
+- TypeScript
+- Docker
 
-# pnpm
-pnpm install
+## Usage
 
-# yarn
-yarn install
+- Setup your environment by `npm install`
+- Copy all .env.*.example files to .env.* and fill them with your data
+- Run `npm run dev` to start development server
+- Run `npx prisma migrate dev` to initialize DB
+- OR: Run `npm run build` to build production version
+- And run `npx prisma migrate deploy` to initialize DB
 
-# bun
-bun install
-```
+## Contributing
 
-## Development Server
+Feel free to contribute to this project. If you have any questions, feel free to contact me.
 
-Start the development server on `http://localhost:3000`:
+## License
 
-```bash
-# npm
-npm run dev
+MIT
 
-# pnpm
-pnpm run dev
 
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
