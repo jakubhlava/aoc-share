@@ -56,7 +56,7 @@ const submitCode = async () => {
         }),
     });
     const response = responseData.value as Submission;
-    await navigateTo(`/submissions/${response.id}`);
+    await navigateTo(`/submission/${response.id}`);
 };
 
 onMounted(async () => {

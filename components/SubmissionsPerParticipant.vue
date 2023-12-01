@@ -16,7 +16,7 @@ const data = groupBy(props.data, ({ user }) => user.name);
             <NuxtLink
                 v-for="submission in submissions"
                 :key="submission.id"
-                :to="`/submissions/${submission.id}`"
+                :to="`/submission/${submission.id}`"
                 class="text-aoc-link hover:text-aoc-link-focus"
             >
                 [ {{ submission.day }} ]
