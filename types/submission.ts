@@ -1,9 +1,11 @@
+export type SubmissionUser = {
+    id: number;
+    name: string;
+    displayName?: string;
+};
+
 export type SubmissionListProp = {
     id: number;
-    user: {
-        id: number;
-        name: string;
-        displayName?: string;
-    };
+    user: SubmissionUser;
     day: number;
 };
