@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const event = useState("event", () => 2023);
+const event = useState("event", () => new Date().getFullYear());
 const day = useState("day", () => 1);
+
+const { data: events } = await useFetch("/api/events/list");
 
 if (new Date().getMonth() === 11) {
     event.value = new Date().getFullYear();
@@ -34,16 +36,24 @@ if (new Date().getMonth() === 11) {
                 <span>day</span>
                 <select v-model="day" class="border-none bg-aoc-background">
                     <option
-                        v-for="day in [...Array(25).keys()]"
-                        :key="day + 1"
-                        :value="day + 1"
+                        v-for="optDay in [...Array(25).keys()]"
+                        :key="optDay + 1"
+                        :value="optDay + 1"
                     >
-                        {{ day + 1 }}
+                        {{ optDay + 1 }}
                     </option>
                 </select>
                 <span>year</span>
                 <select v-model="event" class="border-none bg-aoc-background">
-                    <option value="2023">2023</option>
+                    <ClientOnly fallback-tag="option" fallback="Loading...">
+                        <option
+                            v-for="e in events?.sort((a, b) => b.year - a.year)"
+                            :key="e.year"
+                            :value="e.year"
+                        >
+                            {{ e.year }}
+                        </option>
+                    </ClientOnly>
                 </select>
             </span>
         </div>
