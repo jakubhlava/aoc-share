@@ -22,14 +22,14 @@ const user = useState<User | null>("user", () => null);
 const description = useState("description", () => "");
 
 const editCode = ref(data?.value?.content ?? "");
-const languageMappings = {
-    javascript: javascript(),
-    python: python(),
-    cpp: cpp(),
-    csharp: csharp(),
-    java: java(),
-    php: php(),
-};
+const languageMappings = new Map([
+    ["javascript", javascript()],
+    ["python", python()],
+    ["cpp", cpp()],
+    ["csharp", csharp()],
+    ["java", java()],
+    ["php", php()],
+]);
 const extensions = ref<any>([oneDark]);
 
 const view = ref();
@@ -68,14 +68,10 @@ onMounted(async () => {
     await nextTick(async () => {
         user.value = (await useCurrentUser()).value;
     });
-    extensions.value = [languageMappings.python, oneDark];
-    // extensions.value = [
-    //     Object.hasOwnProperty.call(
-    //         languageMappings,
-    //         user.value?.preferredLanguage ?? "python",
-    //     ),
-    //     oneDark,
-    // ];
+    extensions.value = [
+        languageMappings.get(user.value?.preferredLanguage ?? "python"),
+        oneDark,
+    ];
 });
 </script>
 

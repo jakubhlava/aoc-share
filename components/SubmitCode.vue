@@ -24,14 +24,14 @@ const user = useState<User | null>("user", () => null);
 const description = useState("description", () => "");
 
 const code = ref(``);
-const languageMappings = {
-    javascript: javascript(),
-    python: python(),
-    cpp: cpp(),
-    csharp: csharp(),
-    java: java(),
-    php: php(),
-};
+const languageMappings = new Map([
+    ["javascript", javascript()],
+    ["python", python()],
+    ["cpp", cpp()],
+    ["csharp", csharp()],
+    ["java", java()],
+    ["php", php()],
+]);
 const extensions = ref<any>([oneDark]);
 
 const view = shallowRef();
@@ -73,10 +73,7 @@ onMounted(async () => {
         user.value = (await useCurrentUser()).value;
     });
     extensions.value = [
-        Object.hasOwnProperty.call(
-            languageMappings,
-            user.value?.preferredLanguage ?? "python",
-        ),
+        languageMappings.get(user.value?.preferredLanguage ?? "python"),
         oneDark,
     ];
 });
