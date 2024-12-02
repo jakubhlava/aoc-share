@@ -5,9 +5,16 @@ import type { Submission, User } from "@prisma/client";
 
 const props = defineProps<{ id: number }>();
 
-const data = useState<Submission | null>("submission", () => null);
+const data = useState<(Submission & { user: User }) | null>(
+    "submission",
+    () => null,
+);
 const currentUser = useState<User | null>("user", () => null);
 const highlightedCode = useState<string>("highlightedCode", () => "");
+
+const contentLength = computed(
+    () => (data.value?.content.match(/\n/g) || []).length,
+);
 
 onMounted(async () => {
     await nextTick(async () => {
@@ -21,14 +28,11 @@ onMounted(async () => {
 });
 
 const deleteSolution = async () => {
-    const { data: responseData } = await useFetch(
-        `/api/submission/${props.id}/delete`,
-        {
-            method: "POST",
-        },
-    );
-    if (responseData.value) {
-        await navigateTo(`/${data?.value?.eventId}/${data?.value?.day}`);
+    const responseData = await $fetch(`/api/submission/${props.id}/delete`, {
+        method: "POST",
+    });
+    if (responseData) {
+        await navigateTo(`/events/${data?.value?.eventId}`);
     }
 };
 </script>
@@ -37,7 +41,9 @@ const deleteSolution = async () => {
     <p class="my-2">
         Code by <span class="text-aoc-emph"> {{ data?.user.name }} </span> for
         day {{ data?.day }} of {{ data?.eventId }}, solution has
-        {{ (data?.content.match(/\n/g) || []).length }} lines.
+        {{ contentLength > 0 ? contentLength : 1 }} line{{
+            contentLength > 1 ? "s" : ""
+        }}.
     </p>
     <pre v-html="highlightedCode" />
 
@@ -47,6 +53,12 @@ const deleteSolution = async () => {
     </div>
 
     <div v-if="currentUser?.name === data?.user.name" class="my-2 flex gap-4">
+        <LazyNuxtLink
+            :to="{ name: 'submission-id-edit', params: { id: props.id } }"
+            class="text-aoc-link hover:text-aoc-link-focus"
+        >
+            [ Edit ]
+        </LazyNuxtLink>
         <button
             class="text-aoc-link hover:text-aoc-link-focus"
             @click="deleteSolution"

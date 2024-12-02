@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20.10.0
+ARG NODE_VERSION=22.11.0
 
 FROM node:${NODE_VERSION}-slim as base
 RUN apt-get update -y && apt-get install -y openssl

@@ -14,22 +14,25 @@ const {
     </div>
     <div v-else class="flex w-full justify-between">
         <div class="flex gap-2">
-            <NuxtLink to="/" class="text-aoc-link hover:text-aoc-link-focus">
+            <LazyNuxtLink
+                to="/"
+                class="text-aoc-link hover:text-aoc-link-focus"
+            >
                 [ Home ]
-            </NuxtLink>
+            </LazyNuxtLink>
             <div v-if="error === null">
-                <NuxtLink
+                <LazyNuxtLink
                     to="/submissions/my"
                     class="text-aoc-link hover:text-aoc-link-focus"
                 >
                     [ My submissions ]
-                </NuxtLink>
-                <NuxtLink
+                </LazyNuxtLink>
+                <LazyNuxtLink
                     to="/submit"
                     class="text-aoc-link hover:text-aoc-link-focus"
                 >
-                    [ Submit file ]
-                </NuxtLink>
+                    [ Submit solution ]
+                </LazyNuxtLink>
             </div>
         </div>
         <div>

@@ -12,18 +12,16 @@ import type { Submission, User } from "@prisma/client";
 import LanguageButton from "~/components/LanguageButton.vue";
 
 const props = defineProps<{
-    year: number;
-    day: number;
+    id: number;
 }>();
 
-const year = useState<number | null>("year", () => props.year ?? null);
-const day = useState<number | null>("day", () => props.day ?? null);
+const { data, status } = await useFetch(`/api/submission/${props.id}`);
 
 const user = useState<User | null>("user", () => null);
 
 const description = useState("description", () => "");
 
-const code = ref(``);
+const editCode = ref(data?.value?.content ?? "");
 const languageMappings = {
     javascript: javascript(),
     python: python(),
@@ -34,7 +32,7 @@ const languageMappings = {
 };
 const extensions = ref<any>([oneDark]);
 
-const view = shallowRef();
+const view = ref();
 const handleReady = (payload: any) => {
     view.value = payload.view;
 };
@@ -53,18 +51,16 @@ const changeLanguage = async (language: string) => {
     user.value = responseData.value;
 };
 
-const submitCode = async () => {
-    const { data: responseData } = await useFetch("/api/submission/submit", {
+const saveEdit = async () => {
+    const responseData = await $fetch(`/api/submission/${props.id}/edit`, {
         method: "POST",
         body: JSON.stringify({
-            event: year.value,
-            day: day.value,
-            content: code.value,
+            content: editCode.value,
             description: description.value,
             language: user.value?.preferredLanguage,
         }),
     });
-    const response = responseData.value as Submission;
+    const response = responseData as Submission;
     await navigateTo(`/submission/${response.id}`);
 };
 
@@ -72,18 +68,25 @@ onMounted(async () => {
     await nextTick(async () => {
         user.value = (await useCurrentUser()).value;
     });
-    extensions.value = [
-        Object.hasOwnProperty.call(
-            languageMappings,
-            user.value?.preferredLanguage ?? "python",
-        ),
-        oneDark,
-    ];
+    extensions.value = [languageMappings.python, oneDark];
+    // extensions.value = [
+    //     Object.hasOwnProperty.call(
+    //         languageMappings,
+    //         user.value?.preferredLanguage ?? "python",
+    //     ),
+    //     oneDark,
+    // ];
 });
 </script>
 
 <template>
     <div class="flex flex-col gap-4">
+        <p v-if="status == 'success'">
+            You are editing your solution for day {{ data?.day }} of
+            {{ data?.eventId }}.
+        </p>
+        <p v-else-if="status == 'pending'">Loading...</p>
+        <p v-else>Error loading data.</p>
         <div class="flex w-full justify-between">
             <div class="flex gap-2">
                 <LanguageButton
@@ -126,15 +129,16 @@ onMounted(async () => {
             <div>
                 <button
                     class="text-aoc-link hover:text-aoc-link-focus"
-                    @click="submitCode"
+                    @click="saveEdit"
                 >
-                    [ Submit ]
+                    [ Save ]
                 </button>
             </div>
         </div>
         <ClientOnly :style="{ height: '400px' }">
             <codemirror
-                v-model="code"
+                id="edit"
+                v-model="editCode"
                 placeholder="Insert your code here..."
                 :style="{ height: '400px' }"
                 :autofocus="true"

@@ -10,12 +10,12 @@ const { data } = useFetch(`/api/events/${route.params.year}/submissions/my`);
         >:
     </p>
     <div class="flex flex-col gap-2">
-        <NuxtLink
+        <LazyNuxtLink
             v-for="submission in data"
             :to="`/submission/${submission.id}`"
             class="text-aoc-link hover:text-aoc-link-focus"
             >Day {{ submission.day }}
-        </NuxtLink>
+        </LazyNuxtLink>
     </div>
 </template>
 

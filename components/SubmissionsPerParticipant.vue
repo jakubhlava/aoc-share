@@ -16,14 +16,14 @@ const data = groupBy(
             :key="participant"
         >
             {{ participant }} :
-            <NuxtLink
+            <LazyNuxtLink
                 v-for="submission in submissions.sort((a, b) => a.day - b.day)"
                 :key="submission.id"
                 :to="`/submission/${submission.id}`"
                 class="text-aoc-link hover:text-aoc-link-focus"
             >
                 [ {{ submission.day }} ]
-            </NuxtLink>
+            </LazyNuxtLink>
         </div>
     </div>
 </template>
